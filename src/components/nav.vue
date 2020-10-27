@@ -1,9 +1,9 @@
 <template>
     <div class="nav">
-        <div class="nav_logo"><router-link to="/">[Logo]</router-link></div>
+        <div class="nav_logo"><router-link to="/">{SNEC}</router-link></div>
         <div class="nav_menu">
-            <router-link to="/">home</router-link>
-            <router-link to="/about">test</router-link>
+            <router-link to="/events">Events</router-link>
+            <router-link to="/about">About</router-link>
         </div>
         <div class="nav_user"><h>[User Stuff]</h></div>
     </div>
@@ -21,9 +21,14 @@ export default {
         background: lightgrey;
         align-items: center;
         justify-content: space-between;
+        box-shadow: 0px 1px 10px grey;
     }
     .nav_logo {
         width: 10%;
+    }
+    .nav_logo * {
+        color: black;
+        text-decoration: none;
     }
     .nav_menu {
         display: flex;
