@@ -5,7 +5,7 @@
             <router-link to="/events">Events</router-link>
             <router-link to="/about">About</router-link>
         </div>
-        <div class="nav_user"><h>[User Stuff]</h></div>
+        <div class="nav_user"><p>[User Stuff]</p></div>
     </div>
 </template>
 <script>

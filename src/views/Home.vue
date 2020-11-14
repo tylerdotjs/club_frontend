@@ -2,7 +2,7 @@
   <div class="home">
     <h1>Welcome to Some Nameless Engineering Club</h1>
     <p>Create an account and join in on the fun!</p>
-    <button>Create Account</button>
+    <router-link to="/register">Create Account!</router-link>
   </div>
 </template>
 
@@ -26,11 +26,17 @@ export default {
         width: 100%;
         flex-direction: column;
     }
-    .home > button {
+    .home > a {
         width: 200px;
         background-color: #add8e6;
         border: none;
         padding: 10px;
         border-radius: 10px;
+        color: black;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .home > a:hover {
+      background: #b4d9e6;
     }
 </style>

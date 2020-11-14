@@ -26,12 +26,10 @@ export default {
     var request = new XMLHttpRequest();
 
     // Open a new connection, using the GET request on the URL endpoint
-    request.open("GET", "http://172.17.24.253:8081/meetings", true);
+    request.open("GET", `${window.location.hostname}:8080/events`, true);
     request.withCredentials = true;
 
     request.onload = function () {
-      // Begin accessing JSON data here
-    console.log('test');
       console.log(request.response)
     };
 

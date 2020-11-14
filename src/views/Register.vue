@@ -1,13 +1,13 @@
 <template>
   <div>
-      <auth isLogin='true' />
+      <auth />
   </div>
 </template>
 
 <script>
 import auth from '@/components/auth.vue'
 export default {
-    name: 'Login',
+    name: 'Register',
     components: {
         auth
     }
