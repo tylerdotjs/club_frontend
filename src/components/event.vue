@@ -7,8 +7,18 @@
         <li>Date: {{ date }}</li>
         <li>Time: {{ time }}</li>
         <li>Location: {{ location }}</li>
-        <li><button class="eventItem_join" v-if="!joined" @click="join()">Join</button></li>
-        <li><button class="eventItem_cancel" v-if="joined" @click="cancel()">Cancel</button></li>
+        <li>
+          <button class="eventItem_join" v-if="!joined" @click="join()">
+            Join
+            <div class="loading_button" v-if="loading"><loading-animation /></div>
+          </button>
+        </li>
+        <li>
+          <button class="eventItem_cancel" v-if="joined" @click="cancel()">
+            Cancel
+            <div class="loading_button" v-if="loading"><loading-animation /></div>
+          </button>
+        </li>
       </ul>
     </div>
   </div>
@@ -16,19 +26,23 @@
 <script>
 const axios = require("axios");
 const qs = require("qs");
+import loadingAnimation from "./loadingAnimation.vue";
 export default {
   props: ["subject", "date", "time", "location", "id", "attending"],
   name: "eventItem",
   data() {
     return {
       joined: this.$props.attending,
-      loading: false
+      loading: false,
     };
+  },
+  components: {
+    loadingAnimation,
   },
   methods: {
     join() {
-      if(this.loading || this.joined) return
-      this.loading = true
+      if (this.loading || this.joined) return;
+      this.loading = true;
       axios({
         url: `http://${window.location.hostname}:8080/events/join`,
         method: "POST",
@@ -40,20 +54,20 @@ export default {
           "content-type": "application/x-www-form-urlencoded;charset=utf-8",
         },
       })
-      .then((res) => {
-        if(res.status ==  200){
-          this.joined = true
-          this.loading = false
-        }
-        console.log(res);
-      })
-      .catch(err => {
-          throw err
-      })
+        .then((res) => {
+          if (res.status == 200) {
+            this.joined = true;
+            this.loading = false;
+          }
+          console.log(res);
+        })
+        .catch((err) => {
+          throw err;
+        });
     },
     cancel() {
-      if(this.loading || !this.joined) return
-      this.loading = true
+      if (this.loading || !this.joined) return;
+      this.loading = true;
       axios({
         url: `http://${window.location.hostname}:8080/events/cancel`,
         method: "POST",
@@ -65,17 +79,17 @@ export default {
           "content-type": "application/x-www-form-urlencoded;charset=utf-8",
         },
       })
-      .then((res) => {
-        if(res.status ==  200){
-          this.joined = false
-          this.loading = false
-        }
-        console.log(res);
-      })
-      .catch(err => {
-          throw err
-      })
-    }
+        .then((res) => {
+          if (res.status == 200) {
+            this.joined = false;
+            this.loading = false;
+          }
+          console.log(res);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    },
   },
 };
 </script>
@@ -114,6 +128,8 @@ export default {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+  position: relative;
+  outline:none;
 }
 .eventItem p {
   text-align: left;
@@ -128,5 +144,19 @@ export default {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+  position: relative;
+  outline:none;
+}
+.loading_button {
+  position: absolute;
+  margin: 0px;
+  background-color: rgba(0, 0, 0, 0.3);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

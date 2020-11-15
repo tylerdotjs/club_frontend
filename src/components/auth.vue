@@ -184,6 +184,6 @@ export default {
   display: flex;
   background: rgba(128, 128, 128, 0.5);
   align-items: center;
-  justify-items: center;
+  justify-content: center;
 }
 </style>

@@ -18,7 +18,7 @@
       <button @click="authShown = true">Login</button>
     </div>
     <auth v-if="authShown" isLogin="true" :onSuccess="loginSuccess" />
-    <div v-if="loading" class="eventItem"><loading-animation /></div>
+    <div v-if="loading" class="eventItem eventItem_loading"><loading-animation /></div>
   </div>
 </template>
 <script>
@@ -96,5 +96,8 @@ export default {
 .events {
   width: 100%;
   flex-direction: column-reverse;
+}
+.eventItem_loading > *{
+  margin: auto;
 }
 </style>

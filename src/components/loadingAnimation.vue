@@ -23,7 +23,6 @@ export default {
 
 <style>
 .sk-fading-circle {
-  margin: 100px auto;
   width: 40px;
   height: 40px;
   position: relative;
