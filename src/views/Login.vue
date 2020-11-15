@@ -1,6 +1,6 @@
 <template>
   <div>
-      <auth isLogin='true' />
+      <auth isLogin='true' :onSuccess='onSuccess'/>
   </div>
 </template>
 
@@ -10,6 +10,11 @@ export default {
     name: 'Login',
     components: {
         auth
+    },
+    methods: {
+        onSuccess() {
+            this.$router.push('/')
+        }
     }
 }
 </script>

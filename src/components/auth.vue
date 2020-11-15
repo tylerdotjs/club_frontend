@@ -57,7 +57,7 @@ export default {
       loading: false,
     };
   },
-  props: ["isLogin"],
+  props: ["isLogin", "onSuccess"],
   methods: {
     submit() {
       this.loading = true;
@@ -70,8 +70,8 @@ export default {
     register() {
       var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (!re.test(String(this.email).toLowerCase())) {
-          this.loading = false
-          return this.error = "Email is invalid"
+        this.loading = false;
+        return (this.error = "Email is invalid");
       }
 
       axios({
@@ -87,7 +87,7 @@ export default {
         },
       })
         .then(() => {
-          this.$router.push("/");
+          this.onSuccess();
         })
         .catch((err) => {
           this.error = err.response.data;
@@ -98,6 +98,7 @@ export default {
       axios({
         url: this.url + "/login",
         method: "POST",
+        withCredentials: true,
         data: qs.stringify({
           username: this.username,
           password: this.password,
@@ -106,8 +107,8 @@ export default {
           "content-type": "application/x-www-form-urlencoded;charset=utf-8",
         },
       })
-        .then(() => {
-          this.$router.push("/");
+        .then((res) => {
+          this.onSuccess(res);
         })
         .catch((err) => {
           if (err.response.status == 401) {
