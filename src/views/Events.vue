@@ -58,7 +58,6 @@ export default {
         })
         .then((res) => {
           this.loading = false;
-          console.log(res.data.events[0].attending);
           this.displayEvents(res.data.events);
         })
         .catch((err) => {
@@ -72,7 +71,6 @@ export default {
     displayEvents(events) {
       for (var i = 0; i < events.length; i++) {
         var e = events[i];
-        console.log(e);
         e.date = new Date(e.date);
       }
       this.events = events;
