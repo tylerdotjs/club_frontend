@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      url: `https://api.snec`,
+      url: `https://api.snec.club`,
       username: "",
       email: "",
       password: "",

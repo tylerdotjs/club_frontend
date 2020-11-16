@@ -33,7 +33,7 @@ export default {
     },
     getUserData() {
       axios({
-        url: `https://api.snec/user`,
+        url: `https://api.snec.club/user`,
         method: "GET",
         withCredentials: true,
       })

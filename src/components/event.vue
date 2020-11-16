@@ -44,7 +44,7 @@ export default {
       if (this.loading || this.joined) return;
       this.loading = true;
       axios({
-        url: `https://api.snec/events/join`,
+        url: `https://api.snec.club/events/join`,
         method: "POST",
         data: qs.stringify({
           id: this.$props.id,
@@ -69,7 +69,7 @@ export default {
       if (this.loading || !this.joined) return;
       this.loading = true;
       axios({
-        url: `https://api.snec/events/cancel`,
+        url: `https://api.snec.club/events/cancel`,
         method: "POST",
         data: qs.stringify({
           id: this.$props.id,
