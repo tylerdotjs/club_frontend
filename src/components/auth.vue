@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      url: `http://${window.location.hostname}:8080`,
+      url: `https://api.snec`,
       username: "",
       email: "",
       password: "",

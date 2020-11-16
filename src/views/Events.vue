@@ -53,7 +53,7 @@ export default {
     getEvents() {
       this.loading = true;
       axios
-        .get(`http://${window.location.hostname}:8080/events`, {
+        .get(`https://api.snec/events`, {
           withCredentials: true,
         })
         .then((res) => {

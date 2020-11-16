@@ -33,7 +33,7 @@ export default {
     },
     getUserData() {
       axios({
-        url: `http://${window.location.hostname}:8080/user`,
+        url: `https://api.snec/user`,
         method: "GET",
         withCredentials: true,
       })
