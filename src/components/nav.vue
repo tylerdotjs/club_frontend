@@ -5,12 +5,15 @@
             <router-link to="/events">Events</router-link>
             <router-link to="/about">About</router-link>
         </div>
-        <div class="nav_user"><p>[User Stuff]</p></div>
+        <div class="nav_user"><user /></div>
     </div>
 </template>
 <script>
+import user from './user.vue'
 export default {
-    
+    components: {
+        user
+    }
 }
 </script>
 <style lang="css">
@@ -24,7 +27,10 @@ export default {
         box-shadow: 0px 1px 10px grey;
     }
     .nav_logo {
-        width: 10%;
+        width: 20%;
+        display: flex;
+        justify-content: flex-start;
+        padding-left: 10px
     }
     .nav_logo * {
         color: black;
@@ -45,6 +51,9 @@ export default {
         text-decoration: underline;
     }
     .nav_user {
-        width: 10%;
+        width: 20%;
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 10px
     }
 </style>
