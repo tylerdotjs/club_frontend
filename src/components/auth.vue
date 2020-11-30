@@ -1,8 +1,8 @@
 <template>
   <div class="auth">
     <form @submit.prevent="submit()">
-      <h2 class="form-signin-heading" v-if="!isLogin">Register</h2>
-      <h2 class="form-signin-heading" v-if="isLogin">Login</h2>
+      <h2 class="form-signin-heading" v-if="Register">Register</h2>
+      <h2 class="form-signin-heading" v-if="!Register">Login</h2>
       <input
         class="form-control"
         type="text"
@@ -13,12 +13,12 @@
       />
       <input
         class="form-control"
-        type="text"
+        type="email"
         required
         name="email"
         placeholder="Email"
         v-model="email"
-        v-if="!isLogin"
+        v-if="Register"
       />
       <input
         class="form-control"
@@ -30,17 +30,17 @@
       />
       <p v-if="error != ''" class="error">{{ error }}</p>
       <label class="checkbox"></label>
-      <button class="submit" type="submit" v-if="!isLogin">Register</button>
-      <button class="submit" type="submit" v-if="isLogin">Login</button>
+      <button class="submit" type="submit" v-if="Register">Register</button>
+      <button class="submit" type="submit" v-if="!Register">Login</button>
+      <button class="submit cancel" type="button" @click="exit()" >Cancel</button>
     </form>
     <div v-if="loading" class="loading"><loading-animation /></div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import qs from "qs";
 import LoadingAnimation from "./loadingAnimation.vue";
+const api = require("../apiFunctions");
 
 export default {
   name: "auth",
@@ -57,11 +57,20 @@ export default {
       loading: false,
     };
   },
-  props: ["isLogin", "onSuccess"],
+  props: {
+    Register: {
+      type: Boolean,
+      default: false
+    },
+    onSuccess: Function,
+  },
   methods: {
+    exit() {
+      api.authOverlayCallback(false)
+    },
     submit() {
       this.loading = true;
-      if (this.isLogin) {
+      if (!this.Register) {
         this.login();
       } else {
         this.register();
@@ -73,19 +82,8 @@ export default {
         this.loading = false;
         return (this.error = "Email is invalid");
       }
-
-      axios({
-        url: this.url + "/register",
-        method: "POST",
-        data: qs.stringify({
-          username: this.username,
-          password: this.password,
-          email: this.email,
-        }),
-        headers: {
-          "content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-      })
+      api
+        .register(this.username, this.email, this.password)
         .then(() => {
           this.onSuccess();
         })
@@ -95,18 +93,8 @@ export default {
         });
     },
     login() {
-      axios({
-        url: this.url + "/login",
-        method: "POST",
-        withCredentials: true,
-        data: qs.stringify({
-          username: this.username,
-          password: this.password,
-        }),
-        headers: {
-          "content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-      })
+      api
+        .login(this.username, this.password)
         .then((res) => {
           this.onSuccess(res);
         })
@@ -185,5 +173,12 @@ export default {
   background: rgba(128, 128, 128, 0.5);
   align-items: center;
   justify-content: center;
+}
+.cancel {
+  background: rgb(250, 41, 41);
+  color: white;
+}
+.cancel:hover {
+  background: rgb(255, 60, 60);
 }
 </style>

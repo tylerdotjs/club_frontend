@@ -1,6 +1,6 @@
 <template>
   <div>
-      <auth isLogin='true' :onSuccess='onSuccess'/>
+      <auth :onSuccess='onSuccess'/>
   </div>
 </template>
 

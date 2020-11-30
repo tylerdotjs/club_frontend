@@ -1,5 +1,6 @@
 <template>
   <div class="events">
+    <event-creator v-if="adminView" />
     <event
       v-for="eventItem in events"
       :key="eventItem._id"
@@ -15,49 +16,50 @@
     </event>
     <div v-if="!loggedIn" class="eventItem loginMessage">
       <p>Please login to access events</p>
-      <button @click="authShown = true">Login</button>
+      <button @click="openAuth()">Login</button>
     </div>
-    <auth v-if="authShown" isLogin="true" :onSuccess="loginSuccess" />
     <div v-if="loading" class="eventItem eventItem_loading"><loading-animation /></div>
   </div>
 </template>
 <script>
+const api = require('../apiFunctions')
 import event from "@/components/event.vue";
-import auth from "@/components/auth.vue";
 import LoadingAnimation from "@/components/loadingAnimation.vue";
-const axios = require("axios");
+import EventCreator from '../components/eventCreator.vue';
 export default {
   components: {
     event,
-    auth,
     LoadingAnimation,
+    EventCreator
   },
   data() {
     return {
       loggedIn: true,
-      authShown: false,
+      adminView: true,
       loading: false,
-      events: [],
+      events: []
     };
   },
   name: "events",
   created() {
     this.getEvents();
+    window.addEventListener("loggedIn", () => {
+      this.getEvents()
+    })
   },
   methods: {
-    loginSuccess() {
-      this.authShown = false;
-      this.loggedIn = true;
-      this.getEvents();
+    openAuth(){
+      api.authOverlayCallback(true)
     },
     getEvents() {
       this.loading = true;
-      axios
-        .get(`https://api.snec.club/events`, {
-          withCredentials: true,
-        })
+      api.events()
         .then((res) => {
           this.loading = false;
+          if(res.data.isAdmin){
+            this.adminView = true
+          }
+          this.loggedIn = true
           this.displayEvents(res.data.events);
         })
         .catch((err) => {

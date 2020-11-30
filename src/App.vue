@@ -4,15 +4,32 @@
     <router-view/>
   </div>
   <div id="footer">
-    <h1>Phone: 1+ (920) 343-6053‬</h1>
+    <h1>Phone: +1 (920) 343-6053‬</h1>
     <h1>Email: sneclubinfo@gmail.com</h1>
   </div>
+  <auth v-if="displayAuthOverlay" />
 </template>
 <script>
 import navigation from '@/components/nav.vue'
+import auth from './components/auth.vue'
+const api = require('./apiFunctions')
 export default {
     components: {
-        navigation
+        navigation,
+        auth
+    },
+    data(){
+      return {
+        displayAuthOverlay: false
+      }
+    },
+    created() {
+      api.authOverlayCallback = this.authOverlay
+    },
+    methods: {
+      authOverlay(open) {
+        this.displayAuthOverlay = open
+      }
     }
 }
 </script>

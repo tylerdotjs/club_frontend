@@ -1,51 +1,40 @@
 <template>
   <div class="user">
     <div v-if="loggedIn">
-      <p>Welcome, {{ userData.username }}</p>
+      <p>Welcome, {{userData.username}}</p>
     </div>
     <div v-if="!loggedIn">
-      <button @click="loggingIn = true" class="loginButton">Login</button>
+      <button @click="openAuth()" class="loginButton">Login</button>
     </div>
-    <auth v-if="loggingIn" isLogin="true" :onSuccess="loginSuccess" />
   </div>
 </template>
 
 <script>
-const axios = require("axios");
-import auth from "./auth.vue";
+const api = require("../apiFunctions");
 export default {
   name: "user",
   data() {
     return {
       userData: {},
       loggedIn: false,
-      loggingIn: false,
     };
   },
-  components: {
-    auth,
-  },
-  created() {this.getUserData()},
-  methods: {
-    loginSuccess() {
-      this.loggingIn = false;
-      this.getUserData()
-    },
-    getUserData() {
-      axios({
-        url: `https://api.snec.club/user`,
-        method: "GET",
-        withCredentials: true,
+  created() {
+    api.retrieveUserData()
+      .then((res) => {
+        this.userData = res
+        this.loggedIn = true
+        return
       })
-        .then((res) => {
-          this.userData = res.data;
-          this.loggedIn = true;
-        })
-        .catch((err) => {
-          if (!err.response) {
-            throw err;
-          }
-        });
+      .catch((err) => {
+        if (!err.response) {
+          throw err;
+        }
+      });
+  },
+  methods: {
+    openAuth() {
+      api.authOverlayCallback(true);
     },
   },
 };

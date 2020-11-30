@@ -10,13 +10,17 @@
         <li>
           <button class="eventItem_join" v-if="!joined" @click="join()">
             Join
-            <div class="loading_button" v-if="loading"><loading-animation /></div>
+            <div class="loading_button" v-if="loading">
+              <loading-animation />
+            </div>
           </button>
         </li>
         <li>
           <button class="eventItem_cancel" v-if="joined" @click="cancel()">
             Cancel
-            <div class="loading_button" v-if="loading"><loading-animation /></div>
+            <div class="loading_button" v-if="loading">
+              <loading-animation />
+            </div>
           </button>
         </li>
       </ul>
@@ -24,8 +28,7 @@
   </div>
 </template>
 <script>
-const axios = require("axios");
-const qs = require("qs");
+const api = require("../apiFunctions");
 import loadingAnimation from "./loadingAnimation.vue";
 export default {
   props: ["subject", "date", "time", "location", "id", "attending"],
@@ -43,23 +46,13 @@ export default {
     join() {
       if (this.loading || this.joined) return;
       this.loading = true;
-      axios({
-        url: `https://api.snec.club/events/join`,
-        method: "POST",
-        data: qs.stringify({
-          id: this.$props.id,
-        }),
-        withCredentials: true,
-        headers: {
-          "content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-      })
+      api
+        .joinEvent(this.$props.id)
         .then((res) => {
           if (res.status == 200) {
             this.joined = true;
             this.loading = false;
           }
-          console.log(res);
         })
         .catch((err) => {
           throw err;
@@ -68,23 +61,13 @@ export default {
     cancel() {
       if (this.loading || !this.joined) return;
       this.loading = true;
-      axios({
-        url: `https://api.snec.club/events/cancel`,
-        method: "POST",
-        data: qs.stringify({
-          id: this.$props.id,
-        }),
-        withCredentials: true,
-        headers: {
-          "content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-      })
+      api
+        .cancelEvent(this.$props.id)
         .then((res) => {
           if (res.status == 200) {
             this.joined = false;
             this.loading = false;
           }
-          console.log(res);
         })
         .catch((err) => {
           throw err;
@@ -119,7 +102,7 @@ export default {
   margin: 0 0 0 10px;
 }
 .eventItem_join {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   border: none;
   color: white;
   padding: 15px 32px;
@@ -129,7 +112,7 @@ export default {
   display: inline-block;
   font-size: 16px;
   position: relative;
-  outline:none;
+  outline: none;
 }
 .eventItem p {
   text-align: left;
@@ -145,7 +128,7 @@ export default {
   display: inline-block;
   font-size: 16px;
   position: relative;
-  outline:none;
+  outline: none;
 }
 .loading_button {
   position: absolute;
