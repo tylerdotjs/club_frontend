@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       loggedIn: true,
-      adminView: true,
+      adminView: false,
       loading: false,
       events: []
     };
