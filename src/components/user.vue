@@ -1,7 +1,7 @@
 <template>
   <div class="user">
     <div v-if="loggedIn">
-      <p>Welcome, {{userData.username}}</p>
+      <p>Welcome, {{ userData.username }}</p>
     </div>
     <div v-if="!loggedIn">
       <button @click="openAuth()" class="loginButton">Login</button>
@@ -20,21 +20,26 @@ export default {
     };
   },
   created() {
-    api.retrieveUserData()
-      .then((res) => {
-        this.userData = res
-        this.loggedIn = true
-        return
-      })
-      .catch((err) => {
-        if (!err.response) {
-          throw err;
-        }
-      });
+    window.addEventListener("loggedIn", this.getUserData)
+    this.getUserData()
   },
   methods: {
     openAuth() {
       api.authOverlayCallback(true);
+    },
+    getUserData() {
+      api
+        .retrieveUserData()
+        .then((res) => {
+          this.userData = res;
+          this.loggedIn = true;
+          return;
+        })
+        .catch((err) => {
+          if (!err.response) {
+            throw err;
+          }
+        });
     },
   },
 };
