@@ -1,7 +1,7 @@
 const axios = require('axios').default
 const qs = require('qs')
 
-const apiRoot = "http://192.168.0.58:8080"
+const apiRoot = "https://api.snec.club"
 const api = {
     root: apiRoot,
     login: apiRoot + "/login",
