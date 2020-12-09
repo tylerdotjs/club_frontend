@@ -1,5 +1,5 @@
 <template>
-  <div class="eventCreator">
+  <div class="eventCreator layoutUI">
     <form @submit.prevent="create()">
       <input
         type="text"
@@ -91,7 +91,6 @@ export default {
 
 <style>
 .eventCreator {
-  background: lightgrey;
   margin: 10px;
   padding: 15px;
   display: flex;

@@ -1,6 +1,6 @@
 <template>
-  <div class="eventItem">
-    <h1 class="eventItem_subject">{{ subject }}</h1>
+  <div class="eventItem layoutUI">
+    <h1 class="eventItem_subject special">{{ subject }}</h1>
     <div>
       <slot class="eventItem_description"></slot>
       <ul class="eventItem_infoList">
@@ -78,12 +78,11 @@ export default {
 </script>
 <style lang="css">
 .eventItem {
-  background: lightgrey;
   margin: 10px;
   padding: 15px;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 2px 5px grey;
+  box-shadow: 2px 2px 5px #09323f;
 }
 .eventItem > div {
   display: flex;

@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <h1>Welcome to Some Nameless Engineering Club</h1>
+    <h1 class="special">Welcome to Some Nameless Engineering Club</h1>
     <p>Create an account and join in on the fun!</p>
-    <router-link to="/register">Create Account!</router-link>
+    <router-link class="attention" to="/register">Create Account!</router-link>
   </div>
 </template>
 
@@ -16,7 +16,6 @@ export default {
 <style lang="css">
     .home > h1 {
         font-size: 200%;
-        width: 50%;
     }
     .home {
         display: flex;
@@ -28,15 +27,10 @@ export default {
     }
     .home > a {
         width: 200px;
-        background-color: #add8e6;
         border: none;
         padding: 10px;
         border-radius: 10px;
-        color: black;
         text-decoration: none;
         font-weight: bold;
-    }
-    .home > a:hover {
-      background: #b4d9e6;
     }
 </style>

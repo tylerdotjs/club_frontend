@@ -4,7 +4,7 @@
       <p>Welcome, {{ userData.username }}</p>
     </div>
     <div v-if="!loggedIn">
-      <button @click="openAuth()" class="loginButton">Login</button>
+      <button @click="openAuth()" class="attention loginButton">Login</button>
     </div>
   </div>
 </template>
@@ -48,15 +48,12 @@ export default {
 <style>
 .loginButton {
   width: 100px;
-  background-color: #add8e6;
   border: none;
   padding: 10px;
   border-radius: 10px;
   color: black;
   text-decoration: none;
   font-weight: bold;
-}
-.loginButton:hover {
-  background: #b4d9e6;
+  font-size: .9em;
 }
 </style>

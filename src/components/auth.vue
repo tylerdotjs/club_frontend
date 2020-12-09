@@ -1,8 +1,8 @@
 <template>
   <div class="auth">
-    <form @submit.prevent="submit()">
-      <h2 class="form-signin-heading" v-if="Register">Register</h2>
-      <h2 class="form-signin-heading" v-if="!Register">Login</h2>
+    <form @submit.prevent="submit()" class="layoutUI">
+      <h2 class="form-signin-heading special" v-if="Register">Register</h2>
+      <h2 class="form-signin-heading special" v-if="!Register">Login</h2>
       <input
         class="form-control"
         type="text"
@@ -30,9 +30,9 @@
       />
       <p v-if="error != ''" class="error">{{ error }}</p>
       <label class="checkbox"></label>
-      <button class="submit" type="submit" v-if="Register">Register</button>
-      <button class="submit" type="submit" v-if="!Register">Login</button>
-      <button class="submit cancel" type="button" @click="exit()" >Cancel</button>
+      <button class="submit attention" type="submit" v-if="Register">Register</button>
+      <button class="submit attention" type="submit" v-if="!Register">Login</button>
+      <button class="submit cancel" type="button" v-if="!Register" @click="exit()" >Cancel</button>
     </form>
     <div v-if="loading" class="loading"><loading-animation /></div>
   </div>
@@ -129,7 +129,6 @@ export default {
   flex-direction: column;
   width: 260px;
   margin: auto;
-  background: lightgray;
   padding: 30px;
   border-radius: 20px;
 }
@@ -145,14 +144,9 @@ export default {
 .submit {
   padding: 5px 20px;
   width: 100px;
-  background: #add8e6;
   border: none;
   border-radius: 5px;
 }
-.submit:hover {
-  background: #b4d9e6;
-}
-
 .error {
   padding: 12px 20px;
   width: 200px;
