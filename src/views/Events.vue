@@ -7,9 +7,10 @@
       :id="eventItem._id"
       :subject="eventItem.subject"
       :location="eventItem.location"
-      :date="eventItem.date.toLocaleDateString()"
-      :time="eventItem.date.toLocaleTimeString()"
+      :date="eventItem.date"
       :attending="eventItem.attending"
+      :peers="eventItem.peers"
+      :admin="adminView"
       ><p>
         {{ eventItem.description }}
       </p>

@@ -2,10 +2,17 @@
   <div class="eventItem layoutUI">
     <h1 class="eventItem_subject special">{{ subject }}</h1>
     <div>
-      <slot class="eventItem_description"></slot>
+      <div class="eventItem_desAtt">
+        <div class="eventItem_description"><slot /></div>
+        <div class="eventItem_peerList">
+            <member-id v-for="peer in internalPeers" :key="peer._id" :locked="!admin">
+              {{ peer.username }}
+            </member-id>
+        </div>
+      </div>
       <ul class="eventItem_infoList">
-        <li>Date: {{ date }}</li>
-        <li>Time: {{ time }}</li>
+        <li>Date: {{ date.toLocaleDateString() }}</li>
+        <li>Time: {{ date.toLocaleTimeString() }}</li>
         <li>Location: {{ location }}</li>
         <li>
           <button class="eventItem_join" v-if="!joined" @click="join()">
@@ -30,17 +37,32 @@
 <script>
 const api = require("../apiFunctions");
 import loadingAnimation from "./loadingAnimation.vue";
+import memberId from "./memberId.vue";
+
 export default {
-  props: ["subject", "date", "time", "location", "id", "attending"],
+  props: {
+    subject: String,
+    date: Date,
+    location: String,
+    id: String,
+    attending: Boolean,
+    peers: Array,
+    admin: Boolean
+  },
   name: "eventItem",
   data() {
     return {
       joined: this.$props.attending,
       loading: false,
+      internalPeers: []
     };
   },
   components: {
     loadingAnimation,
+    memberId,
+  },
+  created(){
+    this.internalPeers = this.peers
   },
   methods: {
     join() {
@@ -52,6 +74,7 @@ export default {
           if (res.status == 200) {
             this.joined = true;
             this.loading = false;
+            this.internalPeers.push({_id: api.user._id, username: api.user.username})
           }
         })
         .catch((err) => {
@@ -67,6 +90,7 @@ export default {
           if (res.status == 200) {
             this.joined = false;
             this.loading = false;
+            this.internalPeers = this.internalPeers.filter(e => e._id !== api.user._id)
           }
         })
         .catch((err) => {
@@ -89,9 +113,9 @@ export default {
   justify-content: space-between;
 }
 .eventItem_infoList {
-  min-width: 10%;
   list-style-type: none;
   text-align: left;
+  white-space: nowrap;
 }
 .eventItem_infoList > li {
   margin: 10px 0;
@@ -100,12 +124,20 @@ export default {
   text-align: left;
   margin: 0 0 0 10px;
 }
+.eventItem_description {
+  flex: 1;
+}
+.eventItem_desAtt {
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+}
 .eventItem_join {
   background-color: #4caf50;
   border: none;
   color: white;
   padding: 15px 32px;
-  width: 100%;
+  width: 140px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -121,7 +153,7 @@ export default {
   border: none;
   color: white;
   padding: 15px 32px;
-  width: 100%;
+  width: 140px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -140,5 +172,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.eventItem_peerList {
+  display: flex;
+  flex-flow: row;
+  margin: 10px;
 }
 </style>

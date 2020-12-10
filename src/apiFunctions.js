@@ -1,7 +1,7 @@
 const axios = require('axios').default
 const qs = require('qs')
 
-const apiRoot = "https://api.snec.club"
+const apiRoot = "http://192.168.0.58:8080"
 const api = {
     root: apiRoot,
     login: apiRoot + "/login",
@@ -16,6 +16,11 @@ const events = {
     loggedIn: new Event('loggedIn')
 }
 module.exports = {
+    user: {
+        _id: '',
+        username: '',
+        roles: []
+    },
     loggedIn: false,
     authOverlayCallback() { },
     retrieveUserData() {
@@ -25,7 +30,12 @@ module.exports = {
                 url: api.user,
                 withCredentials: true
             })
-                .then(res => resolve(res.data))
+                .then(res => {
+                    this.user._id = res.data._id
+                    this.user.roles = res.data.roles
+                    this.user.username = res.data.username
+                    return resolve(res.data)
+                })
                 .catch(err => reject(err))
         })
     },
