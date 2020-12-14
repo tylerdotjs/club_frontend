@@ -1,6 +1,6 @@
 <template>
     <div class="nav layoutUI">
-        <div class="nav_logo special"><router-link to="/"><img src="@/assets/snec_logo_cog.svg" alt="LOGO"></router-link></div>
+        <div class="nav_logo special"><router-link to="/"><img src="@/assets/logo.svg" alt="LOGO"></router-link></div>
         <div class="nav_menu special">
             <router-link to="/events">Events</router-link>
             <router-link to="/about">About</router-link>
