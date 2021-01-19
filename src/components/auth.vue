@@ -1,8 +1,7 @@
 <template>
-  <div class="auth">
-    <form @submit.prevent="submit()" class="layoutUI">
-      <h2 class="form-signin-heading special" v-if="Register">Register</h2>
-      <h2 class="form-signin-heading special" v-if="!Register">Login</h2>
+  <overlay class="auth" @exit="exit()">
+    <form v-if="Register" @submit.prevent="register()">
+      <h2 class="form-signin-heading special">Register</h2>
       <input
         class="form-control"
         type="text"
@@ -18,7 +17,6 @@
         name="email"
         placeholder="Email"
         v-model="email"
-        v-if="Register"
       />
       <input
         class="form-control"
@@ -32,24 +30,47 @@
       <label class="checkbox"></label>
       <button class="submit attention" type="submit" v-if="Register">Register</button>
       <button class="submit attention" type="submit" v-if="!Register">Login</button>
-      <button class="submit cancel" type="button" v-if="!Register" @click="exit()" >Cancel</button>
+    </form>
+    <form v-else @submit.prevent="login()">
+      <h2 class="form-signin-heading special" v-if="Register">Register</h2>
+      <h2 class="form-signin-heading special" v-if="!Register">Login</h2>
+      <input
+        class="form-control"
+        type="text"
+        required
+        name="username"
+        placeholder="Username"
+        v-model="username"
+      />
+      <input
+        class="form-control"
+        type="password"
+        required
+        name="password"
+        placeholder="Password"
+        v-model="password"
+      />
+      <p v-if="error != ''" class="error">{{ error }}</p>
+      <label class="checkbox"></label>
+      <button class="submit attention" type="submit">Login</button>
     </form>
     <div v-if="loading" class="loading"><loading-animation /></div>
-  </div>
+  </overlay>
 </template>
 
 <script>
 import LoadingAnimation from "./loadingAnimation.vue";
+import Overlay from './overlay.vue';
 const api = require("../apiFunctions");
 
 export default {
   name: "auth",
   components: {
     LoadingAnimation,
+    Overlay,
   },
   data() {
     return {
-      url: `https://api.snec.club`,
       username: "",
       email: "",
       password: "",
@@ -61,8 +82,7 @@ export default {
     Register: {
       type: Boolean,
       default: false
-    },
-    onSuccess: Function,
+    }
   },
   methods: {
     exit() {
@@ -85,7 +105,7 @@ export default {
       api
         .register(this.username, this.email, this.password)
         .then(() => {
-          this.onSuccess();
+          this.$emit()
         })
         .catch((err) => {
           this.error = err.response.data;
@@ -96,9 +116,11 @@ export default {
       api
         .login(this.username, this.password)
         .then((res) => {
-          this.onSuccess(res);
+          console.log(res)
+          this.$emit('success', res)
         })
         .catch((err) => {
+          console.error(err)
           if (err.response.status == 401) {
             this.error = "Username or password is incorrect";
           } else {
@@ -113,24 +135,10 @@ export default {
 
 <style scoped>
 .auth {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  background: rgba(128, 128, 128, 0.5);
-}
-.auth form {
   align-items: center;
   display: flex;
   flex-direction: column;
   width: 260px;
-  margin: auto;
-  padding: 30px;
-  border-radius: 20px;
 }
 .auth form > * {
   margin: 8px 0;

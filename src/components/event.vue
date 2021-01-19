@@ -5,9 +5,9 @@
       <div class="eventItem_desAtt">
         <div class="eventItem_description"><slot /></div>
         <div class="eventItem_peerList">
-            <member-id v-for="peer in internalPeers" :key="peer._id" :locked="!admin">
+            <tag v-for="peer in peers" :key="peer._id" :edit="!admin" @remove="removeUser(peer._id)">
               {{ peer.username }}
-            </member-id>
+            </tag>
         </div>
       </div>
       <ul class="eventItem_infoList">
@@ -37,7 +37,7 @@
 <script>
 const api = require("../apiFunctions");
 import loadingAnimation from "./loadingAnimation.vue";
-import memberId from "./memberId.vue";
+import tag from "./tag.vue";
 
 export default {
   props: {
@@ -45,36 +45,36 @@ export default {
     date: Date,
     location: String,
     id: String,
-    attending: Boolean,
-    peers: Array,
+    attendees: Array,
     admin: Boolean
   },
   name: "eventItem",
   data() {
     return {
-      joined: this.$props.attending,
+      joined: false,
       loading: false,
-      internalPeers: []
+      peers: []
     };
   },
   components: {
     loadingAnimation,
-    memberId,
+    tag
   },
-  created(){
-    this.internalPeers = this.peers
+  mounted(){
+    this.joined = this.$props.attendees.some(item => item._id == api.user._id)
+    this.peers = this.attendees
+
   },
   methods: {
     join() {
       if (this.loading || this.joined) return;
       this.loading = true;
-      api
-        .joinEvent(this.$props.id)
+      api.event.join(this.$props.id)
         .then((res) => {
           if (res.status == 200) {
             this.joined = true;
             this.loading = false;
-            this.internalPeers.push({_id: api.user._id, username: api.user.username})
+            this.peers.push({_id: api.user._id, username: api.user.username})
           }
         })
         .catch((err) => {
@@ -84,19 +84,25 @@ export default {
     cancel() {
       if (this.loading || !this.joined) return;
       this.loading = true;
-      api
-        .cancelEvent(this.$props.id)
+      api.event.cancel(this.$props.id)
         .then((res) => {
           if (res.status == 200) {
             this.joined = false;
             this.loading = false;
-            this.internalPeers = this.internalPeers.filter(e => e._id !== api.user._id)
+            this.peers = this.peers.filter(e => e._id !== api.user._id)
           }
         })
         .catch((err) => {
           throw err;
         });
     },
+    removeUser(userId) {
+      api.event.removeUser(this.$props.id, userId)
+        .then(() => {
+          this.peers = this.peers.filter(e => e._id !== userId)
+          if(userId == api.user._id) this.joined = false;
+        })
+    }
   },
 };
 </script>
@@ -106,7 +112,6 @@ export default {
   padding: 15px;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 2px 5px #09323f;
 }
 .eventItem > div {
   display: flex;

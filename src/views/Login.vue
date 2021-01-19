@@ -1,6 +1,6 @@
 <template>
   <div>
-      <auth :onSuccess='onSuccess'/>
+      <auth @success='onSuccess' @exit="$router.go(-1)" />
   </div>
 </template>
 

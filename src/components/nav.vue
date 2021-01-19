@@ -20,10 +20,10 @@ export default {
     .nav {
         display: flex;
         width: 100%;
-        height: 50px;
+        min-height: 50px;
+        padding: 5px 0;
         align-items: center;
         justify-content: space-between;
-        box-shadow: 0px 1px 10px #09323f;
     }
     .nav_logo {
         width: 20%;

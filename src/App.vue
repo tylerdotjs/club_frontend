@@ -37,6 +37,9 @@ export default {
 body {
   background: #093948;
 }
+button {
+  outline: none;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -79,5 +82,6 @@ body {
 }
 .layoutUI {
   background: #313535;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
 }
 </style>

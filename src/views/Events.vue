@@ -8,8 +8,7 @@
       :subject="eventItem.subject"
       :location="eventItem.location"
       :date="eventItem.date"
-      :attending="eventItem.attending"
-      :peers="eventItem.peers"
+      :attendees="eventItem.attendees"
       :admin="adminView"
       ><p>
         {{ eventItem.description }}
@@ -57,11 +56,11 @@ export default {
       api.events()
         .then((res) => {
           this.loading = false;
-          if(res.data.isAdmin){
+          if(api.user.roles.includes('admin')){
             this.adminView = true
           }
           this.loggedIn = true
-          this.displayEvents(res.data.events);
+          this.displayEvents(res.data);
         })
         .catch((err) => {
           this.loading = false;

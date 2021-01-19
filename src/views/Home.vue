@@ -10,7 +10,12 @@
 // @ is an alias to /src
 
 export default {
-  name: 'Home'
+  name: 'Home',
+  data(){
+    return{
+      profileVisable: true
+    }
+  }
 }
 </script>
 <style lang="css">

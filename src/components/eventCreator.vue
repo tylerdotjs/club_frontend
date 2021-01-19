@@ -95,7 +95,6 @@ export default {
   padding: 15px;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 2px 5px grey;
 }
 .eventCreator > form > div {
   display: flex;
